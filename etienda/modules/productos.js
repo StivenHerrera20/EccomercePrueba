@@ -26,58 +26,66 @@ producto.get("/productos", (req, res) => {
 });
 
 // insertar un registro
-/* 
-producto.post('/api/users', (req, res) => {
-    let data = {
-        name: req.body.name,
-        lastName: req.body.lastName,
-        phone: req.body.phone
+
+producto.post("/productos", (req, res) => {
+  let data = {
+    nombre: req.body.nombre,
+    descripcion: req.body.descripcion,
+    imagen: req.body.imagen,
+    imagenes: req.body.imagenes,
+    marca: req.body.marca,
+    precio: req.body.precio,
+    stock: req.body.stock,
+    calificacion: req.body.calificacion,
+    estado: req.body.estado,
+    fechaCreacion: req.body.fechaCreacion,
+  };
+  conex.query("INSERT INTO producto set ?", data, (error, respuesta) => {
+    if (error) {
+      console.log(error);
+    } else {
+      res.status(201).send(respuesta);
     }
-    conex.query("INSERT INTO producto set ?", data, (error, respuesta) => {
-        if (error) {
-            console.log(error);
-        } else {
-            res.status(201).send(respuesta)
-        }
-    });
-})
+  });
+});
 // editar
 
-producto.put('/api/users/:id', (req, res) => {
-    let id = req.params.id;
-    let datos = {
-        name: req.body.name,
-        lastName: req.body.lastName,
-        phone: req.body.phone
+producto.put("/productos/:idProducto", (req, res) => {
+  let id = req.params.idProducto;
+  let data = {
+    nombre: req.body.nombre,
+    descripcion: req.body.descripcion,
+    imagen: req.body.imagen,
+    imagenes: req.body.imagenes,
+    marca: req.body.marca,
+    precio: req.body.precio,
+    stock: req.body.stock,
+    calificacion: req.body.calificacion,
+    estado: req.body.estado,
+    fechaCreacion: req.body.fechaCreacion,
+  };
+  conex.query("UPDATE producto SET  ? where idProducto = ?", [data, id]),
+    (error, respuesta) => {
+      if (error) {
+        console.log(error);
+      } else {
+        res.status(201).send(respuesta);
+        //  res.status(201).send(respuesta)
+      }
     };
-    conex.query("UPDATE producto SET  ? where id = ?", [datos, id]), (error, respuesta) => {
-        if (error) {
-            console.log(error);
-        } else {
-            res.status(201)
-            //  res.status(201).send(respuesta)
-        }
-    }
-
-})
+});
 //borrar
 
-producto.delete('/api/users/:id', (req, res) => {
-    let id = req.params.id;
-      let datos = {
-          name: req.body.name,
-          lastName: req.body.lastName,
-          phone: req.body.phone
-      };
-    conex.query("DELETE FROM producto where id = ?", id), (error, respuesta) => {
-        if (error) {
-            console.log(error);
-        } else {
-            //res.status(201)
-            res.status(201).send(respuesta)
-        }
-    }
-
-})
- */
+producto.delete("/productos/:idProducto", (req, res) => {
+  let id = req.params.idProducto;
+  conex.query("DELETE FROM producto where idProducto = ?", id),
+    (error, respuesta) => {
+      if (error) {
+        console.log(error);
+      } else {
+        //res.status(201)
+        res.status(201).send(respuesta);
+      }
+    };
+});
 module.exports = producto;
