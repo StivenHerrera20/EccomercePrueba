@@ -52,10 +52,10 @@ usuario.post("/usuarios", async (req, res) => {
     conex.query("INSERT INTO usuario SET ?", data, (error, respuesta) => {
       console.log(respuesta);
       //res.send("Insercion exitosa!");
-      res.sendStatus(201);
+      res.send(true);
     });
   } catch (error) {
-    console.log(error);
+    res.send(false);
   }
 });
 // editar
@@ -115,12 +115,11 @@ usuario.post("/login", async (req, res) => {
             respuesta.length == 0 ||
             !(await bcrypt.compare(constraseña, respuesta[0].constraseña))
           ) {
-            console.log(
-              "El usuario y/o la clave ingresado no existen en la aplicacion"
-            );
+            //res.send({ estado: true, nombre: "juanito" });
+            res.send(false);
           } else {
             //Enviamos las variables al frontend para que cargue la pagina
-            console.log("Bienvenido al sistema de informacion");
+            res.send(true);
           }
         }
       );
