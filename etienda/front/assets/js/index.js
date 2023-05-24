@@ -8,7 +8,7 @@ let password = document.querySelector("#password");
 let btnEnviar = document.querySelector("#btnEnviar");
 let btnRegistrarse = document.querySelector("#btnRegistrarse");
 let nombre = document.querySelector("#name");
-let apellido = document.querySelector("#apellido");
+let apellidos = document.querySelector("#apellido");
 let emailR = document.querySelector("#emailR");
 let passwordR = document.querySelector("#passwordR");
 let direccion = document.querySelector("#direccion");
@@ -26,7 +26,7 @@ btnEnviar.addEventListener("click", (e) => {
     },
     body: JSON.stringify({
       email: email.value,
-      constraseña: password.value,
+      password: password.value,
     }),
   })
     .then((res) => {
@@ -54,14 +54,14 @@ btnRegistrarse.addEventListener("click", (e) => {
     },
     body: JSON.stringify({
       nombre: nombre.value,
+      apellidos: apellidos.value,
       email: emailR.value,
-      constraseña: passwordR.value,
+      password: passwordR.value,
       direccion: direccion.value,
-      cuidad: ciudad.value,
+      ciudad: ciudad.value,
       zonaPostal: zonaPos.value,
       telefono: telefono.value,
       esAdmin: rol.value,
-      apellido: apellido.value,
     }),
   })
     .then((res) => {

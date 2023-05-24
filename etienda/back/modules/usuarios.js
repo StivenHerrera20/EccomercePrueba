@@ -23,7 +23,7 @@ usuario.options("*", cors());
 usuario.get("/usuarios", async (req, res) => {
   try {
     conex.query(
-      "SELECT idUsuario, email, apellido FROM usuario",
+      "SELECT idUsuario, email, apellidos FROM usuario",
       (error, respuesta) => {
         console.log(respuesta);
         res.send(respuesta);
@@ -40,19 +40,22 @@ usuario.post("/usuarios", async (req, res) => {
   try {
     let data = {
       nombre: req.body.nombre,
+      apellidos: req.body.apellidos,
       email: req.body.email,
-      constraseña: bcrypt.hashSync(req.body.constraseña, 7),
+      password: bcrypt.hashSync(req.body.password, 7),
       direccion: req.body.direccion,
-      cuidad: req.body.cuidad,
+      ciudad: req.body.ciudad,
       zonaPostal: req.body.zonaPostal,
       telefono: req.body.telefono,
       esAdmin: req.body.esAdmin,
-      apellido: req.body.apellido,
     };
     conex.query("INSERT INTO usuario SET ?", data, (error, respuesta) => {
-      console.log(respuesta);
-      //res.send("Insercion exitosa!");
-      res.send(true);
+      if (error) {
+        res.send(false);
+        console.log(error);
+      } else {
+        res.send(true);
+      }
     });
   } catch (error) {
     res.send(false);
@@ -64,14 +67,14 @@ usuario.put("/usuarios/:id", async (req, res) => {
   let id = req.params.id;
   let data = {
     nombre: req.body.nombre,
+    apellidos: req.body.apellidos,
     email: req.body.email,
-    constraseña: bcrypt.hashSync(req.body.constraseña, 7),
+    password: bcrypt.hashSync(req.body.password, 7),
     direccion: req.body.direccion,
-    cuidad: req.body.cuidad,
+    ciudad: req.body.ciudad,
     zonaPostal: req.body.zonaPostal,
     telefono: req.body.telefono,
     esAdmin: req.body.esAdmin,
-    apellido: req.body.apellido,
   };
   conex.query("UPDATE usuario SET  ? where id = ?", [data, id]),
     (error, respuesta) => {
@@ -102,9 +105,9 @@ usuario.delete("/usuarios/:id", (req, res) => {
 usuario.post("/login", async (req, res) => {
   try {
     const email = req.body.email;
-    const constraseña = req.body.constraseña;
+    const password = req.body.password;
     //Validamos que lleguen los datos completos
-    if (!email || !constraseña) {
+    if (!email || !password) {
       console.log("Debe enviar los datos completos");
     } else {
       conex.query(
@@ -113,7 +116,7 @@ usuario.post("/login", async (req, res) => {
         async (error, respuesta) => {
           if (
             respuesta.length == 0 ||
-            !(await bcrypt.compare(constraseña, respuesta[0].constraseña))
+            !(await bcrypt.compare(password, respuesta[0].password))
           ) {
             //res.send({ estado: true, nombre: "juanito" });
             res.send(false);
